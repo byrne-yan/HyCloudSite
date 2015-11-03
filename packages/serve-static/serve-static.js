@@ -11,14 +11,17 @@ var serve = serveStatic(downloadsFolder, {
     'setHeaders': setHeaders
 });
 
+var prefix = '/release';
+console.log('downloads root:'+downloadsFolder+prefix);
 // Set header to force download
 function setHeaders(res, path) {
+    console.log('serve file:'+path);
     res.setHeader('Content-Disposition', contentDisposition(path))
 }
 
-WebApp.rawConnectHandlers.use('/releases',function(req, res, next){
+WebApp.rawConnectHandlers.use(prefix,function(req, res, next){
     //补回前缀
-    req.url = '/releases' + req.url;
+    req.url = prefix + req.url;
     var done = finalhandler(req, res);
     serve(req, res, done)
 });
